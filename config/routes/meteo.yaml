@@ -1,0 +1,3 @@
+conditions:
+    path: /conditions
+    controller: App\Controller\Meteo\ConditionsController
