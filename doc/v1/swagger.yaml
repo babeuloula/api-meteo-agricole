@@ -1,0 +1,399 @@
+openapi: 3.0.0
+info:
+    description: |
+        API du site [Météo Agricole](https://www.lameteoagricole.net/). Les endpoints ont été trouvé via un reverse
+        engineering de l'application Android.
+
+        La propriété de l'API reste celle de lameteoagricole.net.
+
+        Les applications peuvent être téléchargées via les liens suivant :
+        - [Android](https://play.google.com/store/apps/details?id=fr.lameteoagricole.meteoagricoleapp)
+        - [iOS](https://apps.apple.com/fr/app/la-météo-agricole/id993697591)
+    title: 'Météo Agricole API'
+    version: v1
+
+servers:
+    -
+        url: https://www.lameteoagricole.net/
+
+paths:
+    /autocomplete/autocomplete_ajax_test.php:
+        get:
+            tags:
+                - Recherche
+            summary: 'Rechercher une ville'
+            description: |
+                Rechercher une ville parmis toutes les villes de France.
+            parameters:
+                -
+                    description: |
+                        Nom de la ville à rechercher.
+
+                    in: query
+                    name: term
+                    required: true
+                    schema:
+                        type: string
+                        example: lyon
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        value:
+                                            type: string
+                                            example: "Lyon (69000)"
+                                            description: 'Nom de la ville (code postal)'
+    /meteo-ajax-5days-NEW.php?conditions:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo actuelles'
+            description: |
+                Affiche les conditions météo actuelles.
+            parameters:
+                -
+                    description: |
+                        Nom de la ville à afficher.
+
+                        Le nom de la ville doit au préalable être récupérée via la recherche.
+                    in: query
+                    name: commune
+                    required: false
+                    schema:
+                        type: string
+                        example: lyon
+                -
+                    description: |
+                        Latitude de la ville à afficher
+                    in: query
+                    name: Latitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 45.6963425
+                -
+                    description: |
+                        Longitude de la ville à afficher
+                    in: query
+                    name: Longitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 4.735948
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    today:
+                                        description: Date
+                                        type: date
+                                        format: d/m/Y
+                                        example: "15/08/2019"
+                                    commune:
+                                        description: Nom de la commune
+                                        type: string
+                                        example: Lyon (69000)
+                                    maj:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: date
+                                        format: d/m à h:i
+                                        example: "15/08 à 10:50"
+                                    resume:
+                                        description: Condition météo
+                                        type: string
+                                        example: "Ciel Nuageux"
+                                    temperature:
+                                        description: Température
+                                        type: string
+                                        format: html
+                                        example: "20&deg;"
+                                    ress:
+                                        description: Température ressentie
+                                        type: int
+                                        example: 17
+                                    rose:
+                                        description: Point de rosée
+                                        type: string
+                                        format: html
+                                        example: "14&deg;"
+                                    vit:
+                                        description: Vitesse du vent
+                                        type: string
+                                        example: "20km/h"
+                                    dir:
+                                        description: Direction du vent
+                                        type: string
+                                        example: "O"
+                                    neb:
+                                        description: Nébulosité
+                                        type: string
+                                        example: "70%"
+                                    humid:
+                                        description: Humidité relative
+                                        type: string
+                                        example: "66%"
+                                    press:
+                                        description: Pression atmosphérique
+                                        type: string
+                                        example: "1019hPa"
+                                    visi:
+                                        description: Distance de visibilité
+                                        type: string
+                                        example: "16.093km"
+    /meteo-ajax-5days-NEW.php?jours:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo sur 10 jours'
+            description: |
+                Affiche les conditions météo des 10 prochains jours.
+            parameters:
+                -
+                    description: |
+                        Nom de la ville à afficher.
+
+                        Le nom de la ville doit au préalable être récupérée via la recherche.
+                    in: query
+                    name: commune
+                    required: false
+                    schema:
+                        type: string
+                        example: lyon
+                -
+                    description: |
+                        Latitude de la ville à afficher
+                    in: query
+                    name: Latitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 45.6963425
+                -
+                    description: |
+                        Longitude de la ville à afficher
+                    in: query
+                    name: Longitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 4.735948
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    today:
+                                        description: Date
+                                        type: date
+                                        format: d/m/Y
+                                        example: "15/08/2019"
+                                    commune:
+                                        description: Nom de la commune
+                                        type: string
+                                        example: Lyon (69000)
+                                    maj:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: date
+                                        format: d/m à h:i
+                                        example: "15/08 à 10:50"
+                                    dateJ*:
+                                        description: Date du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "jeu<br />15"
+                                    tmin*:
+                                        description: Température minimale du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<div class=\"icone sm i-12 v\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Peu nuageux\"></div>"
+                                    tmax*:
+                                        description: Température maximale du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<div class='circle' style='background-color:#f88547;;' ><span>25&deg;</span></div>"
+                                    moy*:
+                                        description: Température moyenne de saison du jour où * est un entier allant de 1 à 7
+                                        type: string
+                                        format: html
+                                        example: "<span style='color:#00ac60;font-weight:bold;'>=&deg;</span>"
+                                    stn:
+                                        description: Nom de la station météo
+                                        type: string
+                                        example: "LYON-BRON"
+                                    hum*:
+                                        description: Humidité relative du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        example: "59%"
+                                    vit*:
+                                        description: Vitesse du vent du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        example: "20km/h"
+                                    vitMax*:
+                                        description: Rafales de vent du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<div style='color:#e5a04e;'>30 km/h</div>"
+                                    dir*:
+                                        description: Direction du vent du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<img src='https://www.lameteoagricole.net/includes/icones/O-4.png'   height='30' alt='direction du vent - O' title='direction du vent - O' /> O<br />"
+                                    quan*:
+                                        description: Précipitations du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<div class='circle' style='background-color:#d9e6f0; color:#424c4e' ><span>0-1<br />mm</span></div>"
+                                    prob*:
+                                        description: Probabilités de précipitations du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        example: "20%"
+                                    pmax*:
+                                        description: Maximum de pluie prévu ce jour où * est un entier allant de 1 à 7
+                                        type: string
+                                        format: html
+                                        example: "<div style='line-height:20px;'>0.5mm<br />à 11h</div>"
+                                    neb*:
+                                        description: Nébulosité du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        example: "70%"
+                                    ensol*:
+                                        description: Heures d'ensoleillement où * est un entier allant de 1 à 10
+                                        type: string
+                                        example: "70%"
+                                    rose*:
+                                        description: Point de rosée du jour où * est un entier allant de 1 à 7
+                                        type: string
+                                        format: html
+                                        example: "14&deg;"
+                                    chal*:
+                                        description: Indice de chaleur du jour où * est un entier allant de 1 à 10
+                                        type: string
+                                        format: html
+                                        example: "<div style='color:#75ba7a;' >26</div>"
+    /meteo-ajax-5days-NEW.php?heure:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo sur 48h'
+            description: |
+                Affiche les conditions météo des 48 prochaines heures.
+            parameters:
+                -
+                    description: |
+                        Nom de la ville à afficher.
+
+                        Le nom de la ville doit au préalable être récupérée via la recherche.
+                    in: query
+                    name: commune
+                    required: false
+                    schema:
+                        type: string
+                        example: lyon
+                -
+                    description: |
+                        Latitude de la ville à afficher
+                    in: query
+                    name: Latitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 45.6963425
+                -
+                    description: |
+                        Longitude de la ville à afficher
+                    in: query
+                    name: Longitude
+                    required: false
+                    schema:
+                        type: float
+                        example: 4.735948
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    today:
+                                        description: Date
+                                        type: date
+                                        format: d/m/Y
+                                        example: "15/08/2019"
+                                    commune:
+                                        description: Nom de la commune
+                                        type: string
+                                        example: Lyon (69000)
+                                    maj:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: date
+                                        format: d/m à h:i
+                                        example: "15/08 à 10:50"
+                                    jour:
+                                        descrption: Date et heure heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'><div>jeu<br />13h</div></div>"
+                                    icon:
+                                        descrption: Condition météo heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class=\"dataDetail td_corps_meteo\"><div class=\"icone sm i-65 v\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Nuageux\" alt=\"Nuageux\"></div></div>"
+                                    neb:
+                                        description: Nébulosité heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'><div class='circle' style='background-color:#a2b0b7;color:#01361e;' >83%</div>"
+                                    prob:
+                                        description: Probabilités de précipitations heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "<10%"
+                                    quant:
+                                        description: Précipitations heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail quantCircWrap td_corps_meteo'><div class='circle quantCirc' style='background-color:#ffffff;color:#424c4e'>0<br />mm</div><span><10%</span></div>"
+                                    dirvent:
+                                        description: Direction du vent heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'><img src='https://www.lameteoagricole.net/includes/icones/O-4.png'  height='30' alt='direction du vent - O' title='direction du vent - O' style='margin-top:-5px;margin-bottom:4px;' /><br />O</div>"
+                                    speed:
+                                        description: Vitesse du vent heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'><div>20km/h<br /><span style='color:#ffffff;'>25km/h</span></div>"
+                                    humid:
+                                        description: Humidité relative heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'>57%</div>"
