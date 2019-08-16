@@ -12,6 +12,7 @@ class Meteo implements \JsonSerializable
     protected const VITESSE = "km/h";
     protected const PRESSION = "hPa";
     protected const DISTANCE = "km";
+    protected const PRECIPITATION = "mm";
 
     /** @var \DateTime */
     private $date;
@@ -56,44 +57,74 @@ class Meteo implements \JsonSerializable
     /** @param int|string $temperature */
     protected function formatTemperature($temperature): string
     {
-        return html_entity_decode(
-            sprintf(
-                "%s%sC",
-                str_replace(static::DEG, '', $temperature),
-                static::DEG
+        return trim(
+            html_entity_decode(
+                sprintf(
+                    "%s%sC",
+                    trim(str_replace(static::DEG, '', $temperature)),
+                    static::DEG
+                )
             )
         );
     }
 
     protected function formatVitesse(string $vitesse): string
     {
-        return sprintf(
-            "%s %s",
-            str_replace(static::VITESSE, '', $vitesse),
-            static::VITESSE
+        return trim(
+            sprintf(
+                "%s %s",
+                trim(str_replace(static::VITESSE, '', $vitesse)),
+                static::VITESSE
+            )
         );
     }
 
     protected function formatPression(string $pression): string
     {
-        return sprintf(
-            "%s %s",
-            str_replace(static::PRESSION, '', $pression),
-            static::PRESSION
+        return trim(
+            sprintf(
+                "%s %s",
+                trim(str_replace(static::PRESSION, '', $pression)),
+                static::PRESSION
+            )
         );
     }
 
-    protected function formatDistance(string $distance)
+    protected function formatDistance(string $distance): string
     {
-        return sprintf(
-            "%s %s",
-            number_format(
-                (float) str_replace(static::DISTANCE, '', $distance),
-                3,
-                ',',
-                ' '
-            ),
-            static::DISTANCE
+        return trim(
+            sprintf(
+                "%s %s",
+                trim(
+                    number_format(
+                        (float) str_replace(static::DISTANCE, '', $distance),
+                        3,
+                        ',',
+                        ' '
+                    )
+                ),
+                static::DISTANCE
+            )
+        );
+    }
+
+    protected function formatPrecipitation(string $precipitation): string
+    {
+        return trim(
+            sprintf(
+                "%s %s",
+                trim(str_replace(static::PRECIPITATION, '', $precipitation)),
+                static::PRECIPITATION
+            )
+        );
+    }
+
+    protected function removeHtml(string $string): string
+    {
+        return trim(
+            strip_tags(
+                str_replace('<br />', ' ', $string)
+            )
         );
     }
 }

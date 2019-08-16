@@ -335,7 +335,7 @@ paths:
                                         format: d/m à h:i
                                         example: "15/08 à 10:50"
                                     jour:
-                                        descrption: Date et heure heure par heure
+                                        description: Date et heure heure par heure
                                         type: array
                                         items:
                                             type: string
@@ -343,13 +343,21 @@ paths:
                                         example:
                                             - "<div class='dataDetail td_corps_meteo'><div>jeu<br />13h</div></div>"
                                     icon:
-                                        descrption: Condition météo heure par heure
+                                        description: Condition météo heure par heure
                                         type: array
                                         items:
                                             type: string
                                             format: html
                                         example:
                                             - "<div class=\"dataDetail td_corps_meteo\"><div class=\"icone sm i-65 v\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Nuageux\" alt=\"Nuageux\"></div></div>"
+                                    temp:
+                                        description: Température heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                            format: html
+                                        example:
+                                            - "<div class='dataDetail td_corps_meteo'><div class='circle' style='background-color:#f7723e;color:#c9dcd4' ><span>27&deg;<br /><em>26</em></span></div></div>"
                                     neb:
                                         description: Nébulosité heure par heure
                                         type: array

@@ -4,15 +4,14 @@
  */
 declare(strict_types=1);
 
-namespace App\Controller\Search;
+namespace App\Controller\Meteo;
 
-use App\Meteo\Ville;
 use App\Service\MeteoApi\MeteoApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class SearchController
+final class LastTenDaysController
 {
     /** @var MeteoApi */
     private $meteoApi;
@@ -24,14 +23,14 @@ final class SearchController
 
     public function __invoke(Request $request): JsonResponse
     {
-        $term = $request->query->get('term', null);
+        $term = $request->query->get('commune', null);
 
         if (false === is_string($term)) {
             return new JsonResponse([
-                'message' => "Paramètre 'term' manquant."
+                'message' => "Paramètre 'commune' manquant."
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($this->meteoApi->search($term));
+        return new JsonResponse($this->meteoApi->lastTenDays($term));
     }
 }

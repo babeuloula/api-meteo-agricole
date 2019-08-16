@@ -6,6 +6,10 @@ declare(strict_types=1);
 
 namespace App\Service\MeteoApi;
 
+use App\Meteo\Conditions;
+use App\Meteo\LastTenDays;
+use App\Meteo\LastTwoDays;
+use App\Meteo\Ville;
 use App\Service\Http\HttpClient;
 use App\Service\JsonDecoder\JsonDecoder;
 use GuzzleHttp\RequestOptions;
@@ -41,10 +45,32 @@ final class MeteoApi
             ]
         );
 
-        return $this->jsonDecoder->decode($response->getBody()->getContents());
+        return array_map(
+            function(array $data): Ville {
+                return new Ville($data['value']);
+            },
+            $this->jsonDecoder->decode(
+                $response->getBody()->getContents()
+            )
+        );
     }
 
-    public function conditions(string $term): array
+    public function conditions(string $term): Conditions
+    {
+        return new Conditions($this->meteo($term, static::TYPE_CONDITIONS));
+    }
+
+    public function lastTenDays(string $term): LastTenDays
+    {
+        return new LastTenDays($this->meteo($term, static::TYPE_JOURS));
+    }
+
+    public function lastTwoDays(string $term): LastTwoDays
+    {
+        return new LastTwoDays($this->meteo($term, static::TYPE_HEURE));
+    }
+
+    private function meteo(string $term, string $type): array
     {
         $response = $this->client->getClient()->request(
             'GET',
@@ -52,11 +78,13 @@ final class MeteoApi
             [
                 RequestOptions::QUERY => [
                     'commune' => $term,
-                    static::TYPE_CONDITIONS => true,
+                    $type => true,
                 ],
             ]
         );
 
-        return $this->jsonDecoder->decode($response->getBody()->getContents());
+        return $this->jsonDecoder->decode(
+            $response->getBody()->getContents()
+        );
     }
 }

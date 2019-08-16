@@ -32,8 +32,6 @@ final class ConditionsController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(
-            new Conditions($this->meteoApi->conditions($term))
-        );
+        return new JsonResponse($this->meteoApi->conditions($term));
     }
 }

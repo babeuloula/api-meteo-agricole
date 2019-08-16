@@ -43,7 +43,7 @@ final class Conditions extends Meteo
         parent::__construct($data);
 
         $this->temps = $data["resume"];
-        $this->temperature= $this->formatTemperature($data["temperature"]);
+        $this->temperature = $this->formatTemperature($data["temperature"]);
         $this->temperatureRessentie = $this->formatTemperature($data["ress"]);
         $this->rosee = $this->formatTemperature($data["rose"]);
         $this->vitesse = $this->formatVitesse($data["vit"]);
