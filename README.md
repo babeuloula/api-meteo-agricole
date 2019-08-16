@@ -12,7 +12,7 @@ Les applications peuvent être téléchargées via les liens suivant :
 - [Android](https://play.google.com/store/apps/details?id=fr.lameteoagricole.meteoagricoleapp)
 - [iOS](https://apps.apple.com/fr/app/la-météo-agricole/id993697591)
 
-## Documentation
+## Documentations
 
 - Documentation de l'API originale `/docs/v1`
 - Documentation de l'API retravaillée `/docs/v2`
