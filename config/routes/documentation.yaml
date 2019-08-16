@@ -1,0 +1,7 @@
+v1:
+    path: /
+    controller: App\Controller\Documentation\V1Controller
+
+v1_swagger:
+    path: /swagger.yaml
+    controller: App\Controller\Documentation\V1SwaggerController
