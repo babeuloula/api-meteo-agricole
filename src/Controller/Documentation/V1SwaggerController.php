@@ -21,6 +21,6 @@ class V1SwaggerController
 
     public function __invoke(): Response
     {
-        return new Response(file_get_contents($this->kernelProjectDir."/doc/v1/swagger.yaml"));
+        return new Response(file_get_contents($this->kernelProjectDir."/docs/v1/swagger.yaml"));
     }
 }

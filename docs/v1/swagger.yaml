@@ -266,7 +266,7 @@ paths:
                                     ensol*:
                                         description: Heures d'ensoleillement où * est un entier allant de 1 à 10
                                         type: string
-                                        example: "70%"
+                                        example: "6h32"
                                     rose*:
                                         description: Point de rosée du jour où * est un entier allant de 1 à 7
                                         type: string

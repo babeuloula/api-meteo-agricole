@@ -7,8 +7,9 @@ declare(strict_types=1);
 namespace App\Controller\Documentation;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Yaml\Yaml;
 
-class V1Controller
+class V2SwaggerController
 {
     /** @var string */
     private $kernelProjectDir;
@@ -20,6 +21,6 @@ class V1Controller
 
     public function __invoke(): Response
     {
-        return new Response(file_get_contents($this->kernelProjectDir."/docs/v1/index.html"));
+        return new Response(file_get_contents($this->kernelProjectDir."/docs/v2/swagger.yaml"));
     }
 }

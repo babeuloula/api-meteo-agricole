@@ -1,0 +1,418 @@
+openapi: 3.0.0
+info:
+    description: |
+        API retravaillée de l'API originale du site [Météo Agricole](https://www.lameteoagricole.net/). Les endpoints
+        ont été trouvé via un reverse engineering de l'application Android.
+
+        La propriété de l'API reste celle de lameteoagricole.net.
+
+        Les applications peuvent être téléchargées via les liens suivant :
+        - [Android](https://play.google.com/store/apps/details?id=fr.lameteoagricole.meteoagricoleapp)
+        - [iOS](https://apps.apple.com/fr/app/la-météo-agricole/id993697591)
+    title: 'Météo Agricole API - Restfull'
+    version: v2
+
+servers:
+    -
+        url: /
+
+components:
+    parameters:
+        commune:
+            description: |
+                Nom de la ville à afficher.
+
+                Le nom de la ville doit au préalable être récupérée via la recherche.
+            in: query
+            name: commune
+            required: true
+            schema:
+            type: string
+            example: lyon
+
+paths:
+    /search:
+        get:
+            tags:
+                - Recherche
+            summary: 'Rechercher une ville'
+            description: |
+                Rechercher une ville parmis toutes les villes de France.
+            parameters:
+                -
+                    description: |
+                        Nom de la ville à rechercher.
+
+                    in: query
+                    name: term
+                    required: true
+                    schema:
+                        type: string
+                        example: lyon
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        ville:
+                                            type: string
+                                            example: "Lyon"
+                                            description: 'Nom de la ville'
+                                        codePostal:
+                                            type: string
+                                            example: "69000"
+                                            description: 'Code postal de la ville'
+    /conditions:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo actuelles'
+            description: |
+                Affiche les conditions météo actuelles.
+            parameters:
+                -
+                    $ref: '#/components/parameters/commune'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    date:
+                                        description: Date
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T00:00:00+02:00"
+                                    commune:
+                                        type: object
+                                        description: Information sur la commune
+                                        properties:
+                                            ville:
+                                                type: string
+                                                example: "Lyon"
+                                                description: 'Nom de la ville'
+                                            codePostal:
+                                                type: string
+                                                example: "69000"
+                                                description: 'Code postal de la ville'
+                                    updatedAt:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T19:25:00+02:00"
+                                    temps:
+                                        description: Condition météo
+                                        type: string
+                                        example: "Ciel Nuageux"
+                                    temperature:
+                                        description: Température
+                                        type: string
+                                        example: "28°C"
+                                    temperatureRessentie:
+                                        description: Température ressentie
+                                        type: string
+                                        example: "27°C"
+                                    rosee:
+                                        description: Point de rosée
+                                        type: string
+                                        example: "11°C"
+                                    vitesse:
+                                        description: Vitesse du vent
+                                        type: string
+                                        example: "20 km/h"
+                                    direction:
+                                        description: Direction du vent
+                                        type: string
+                                        example: "O"
+                                    nebulosite:
+                                        description: Nébulosité
+                                        type: string
+                                        example: "70%"
+                                    humiditeRelative:
+                                        description: Humidité relative
+                                        type: string
+                                        example: "66%"
+                                    pressionAtmospherique:
+                                        description: Pression atmosphérique
+                                        type: string
+                                        example: "1019 hPa"
+                                    distanceVisibilite:
+                                        description: Distance de visibilité
+                                        type: string
+                                        example: "16,093 km"
+    /lastTenDays:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo sur 10 jours'
+            description: |
+                Affiche les conditions météo des 10 prochains jours.
+            parameters:
+                -
+                    $ref: '#/components/parameters/commune'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    date:
+                                        description: Date
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T00:00:00+02:00"
+                                    commune:
+                                        type: object
+                                        description: Information sur la commune
+                                        properties:
+                                            ville:
+                                                type: string
+                                                example: "Lyon"
+                                                description: 'Nom de la ville'
+                                            codePostal:
+                                                type: string
+                                                example: "69000"
+                                                description: 'Code postal de la ville'
+                                    updatedAt:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T19:25:00+02:00"
+                                    dates:
+                                        description: Date du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "ven 15"
+                                            - "sam 17"
+                                    temperaturesMin:
+                                        description: Température minimale du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "13°C"
+                                            - "16°C"
+                                    temperaturesMax:
+                                        description: Température maximale du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "29°C"
+                                            - "28°C"
+                                    temperaturesMoyennes:
+                                        description: Température moyenne de saison du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "+2°C"
+                                            - "-1°C"
+                                            - "=°C"
+                                    station:
+                                        description: Nom de la station météo
+                                        type: string
+                                        example: "LYON-BRON"
+                                    humiditesRelatives:
+                                        description: Humidité relative du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "61%"
+                                            - "59%"
+                                    vitesses:
+                                        description: Vitesse du vent du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "5 km/h"
+                                            - "10 km/h"
+                                    rafales:
+                                        description: Rafales de vent du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "10 km/h"
+                                            - "25 km/h"
+                                    directions:
+                                        description: Direction du vent du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "SSO"
+                                            - "N"
+                                    precipitations:
+                                        description: Précipitations du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "0 mm"
+                                            - "1-3 mm"
+                                    probabilites:
+                                        description: Probabilités de précipitations du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "<10%"
+                                            - "20%"
+                                    pluiesMax:
+                                        description: Maximum de pluie prévu ce jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "-"
+                                            - "0.3mm à 19h"
+                                    nebulosites:
+                                        description: Nébulosité du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "52%"
+                                            - "78%"
+                                    heuresEnsoleillement:
+                                        description: Heures d'ensoleillement
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "2h59"
+                                            - "6h32"
+                                    rosees:
+                                        description: Point de rosée du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "11°C"
+                                            - "13°C"
+                                    chaleurs:
+                                        description: Indice de chaleur du jour
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "30°C"
+                                            - "25°C"
+    /lastTwoDays:
+        get:
+            tags:
+                - Météo
+            summary: 'Conditions météo sur 48h'
+            description: |
+                Affiche les conditions météo des 48 prochaines heures.
+            parameters:
+                -
+                    $ref: '#/components/parameters/commune'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    date:
+                                        description: Date
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T00:00:00+02:00"
+                                    commune:
+                                        type: object
+                                        description: Information sur la commune
+                                        properties:
+                                            ville:
+                                                type: string
+                                                example: "Lyon"
+                                                description: 'Nom de la ville'
+                                            codePostal:
+                                                type: string
+                                                example: "69000"
+                                                description: 'Code postal de la ville'
+                                    updatedAt:
+                                        description: Date de la mise à jour de la donnée météo
+                                        type: datetime
+                                        format: RFC3339
+                                        example: "2019-08-16T19:25:00+02:00"
+                                    dates:
+                                        description: Date et heure heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "ven 15h"
+                                            - "sam 16h"
+                                    temps:
+                                        description: Condition météo heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "Ensoleillé"
+                                            - "Ciel plutôt dégagé"
+                                    temperatures:
+                                        description: Température heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "27°C"
+                                            - "25°C"
+                                    nebulosites:
+                                        description: Nébulosité heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "47%"
+                                            - "52%"
+                                    probabilites:
+                                        description: Probabilités de précipitations heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "0%"
+                                            - "<10%"
+                                    precipitations:
+                                        description: Précipitations heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "0 mm"
+                                            - "10 mm"
+                                    directions:
+                                        description: Direction du vent heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "S"
+                                            - "ONO"
+                                    vitesses:
+                                        description: Vitesse du vent heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "5 km/h"
+                                            - "10 km/h"
+                                    humiditesRelatives:
+                                        description: Humidité relative heure par heure
+                                        type: array
+                                        items:
+                                            type: string
+                                        example:
+                                            - "38%"
+                                            - "61%"
