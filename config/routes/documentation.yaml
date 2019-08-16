@@ -1,7 +1,15 @@
 v1:
-    path: /
+    path: /docs/v1
     controller: App\Controller\Documentation\V1Controller
 
 v1_swagger:
-    path: /swagger.yaml
+    path: /docs/v1/swagger.yaml
     controller: App\Controller\Documentation\V1SwaggerController
+
+v2:
+    path: /docs/v2
+    controller: App\Controller\Documentation\V2Controller
+
+v2_swagger:
+    path: /docs/v2/swagger.yaml
+    controller: App\Controller\Documentation\V2SwaggerController
