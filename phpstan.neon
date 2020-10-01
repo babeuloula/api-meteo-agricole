@@ -1,0 +1,6 @@
+parameters:
+    level: max
+    paths:
+        - src
+    ignoreErrors:
+        - "#Offset 'title' does not exist on SimpleXMLElement|null.#"

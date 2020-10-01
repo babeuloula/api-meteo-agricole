@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Service\MeteoApi;
@@ -33,6 +35,7 @@ final class MeteoApi
         $this->jsonDecoder = $jsonDecoder;
     }
 
+    /** @return mixed[] */
     public function search(string $term): array
     {
         $response = $this->client->getClient()->request(
@@ -46,7 +49,7 @@ final class MeteoApi
         );
 
         return array_map(
-            function(array $data): Ville {
+            function (array $data): Ville {
                 return new Ville($data['value']);
             },
             $this->jsonDecoder->decode(
@@ -70,6 +73,7 @@ final class MeteoApi
         return new LastTwoDays($this->meteo($term, static::TYPE_HEURE));
     }
 
+    /** @return mixed[] */
     private function meteo(string $term, string $type): array
     {
         $response = $this->client->getClient()->request(
