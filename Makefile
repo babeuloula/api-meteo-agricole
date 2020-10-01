@@ -17,3 +17,18 @@ xdebug-disable:
 
 shell:
 	cd ./docker && docker-compose exec php bash
+
+check:
+	cd ./docker/ && docker-compose exec -T php make phpcs
+	cd ./docker/ && docker-compose exec -T php make stan
+	cd ./docker/ && docker-compose exec -T php make doctrine
+
+phpcs:
+	vendor/bin/phpcs
+
+fixer:
+	./vendor/bin/phpcbf
+
+stan:
+	bin/console cache:warmup --env=dev
+	vendor/bin/phpstan analyse --memory-limit=4000M

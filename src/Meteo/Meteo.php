@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Meteo;
@@ -23,11 +25,16 @@ class Meteo implements \JsonSerializable
     /** @var \DateTime */
     private $updatedAt;
 
+    /** @param mixed[] $data */
     public function __construct(array $data)
     {
-        $this->date = \DateTime::createFromFormat("d/m/Y", $data['today'])->setTime(0, 0, 0);
+        $date = \DateTime::createFromFormat("d/m/Y H:i:s", $data['today'] . " 00:00:00");
+        $this->date = (false === $date instanceof \DateTime) ? new \DateTime() : $date;
+
         $this->commune = new Ville($data['commune']);
-        $this->updatedAt = \DateTime::createFromFormat("j/m \à H:i", $data['maj']);
+
+        $updatedAt = \DateTime::createFromFormat("j/m \à H:i", $data['maj']);
+        $this->updatedAt = (false === $updatedAt instanceof \DateTime) ? new \DateTime() : $updatedAt;
     }
 
     public function getDate(): \DateTime
@@ -45,6 +52,7 @@ class Meteo implements \JsonSerializable
         return $this->updatedAt;
     }
 
+    /** @return mixed[] */
     public function jsonSerialize(): array
     {
         return [
@@ -61,7 +69,7 @@ class Meteo implements \JsonSerializable
             html_entity_decode(
                 sprintf(
                     "%s%sC",
-                    trim(str_replace(static::DEG, '', $temperature)),
+                    trim(str_replace(static::DEG, '', (string) $temperature)),
                     static::DEG
                 )
             )

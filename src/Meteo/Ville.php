@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Meteo;
@@ -18,11 +20,11 @@ final class Ville implements \JsonSerializable
     {
         $values = explode(' ', $value);
 
-        $codePostal = end($values);
+        $codePostal = (string) end($values);
         $codePostal = ltrim($codePostal, '(');
         $codePostal = rtrim($codePostal, ')');
 
-        unset($values[count($values)-1]);
+        unset($values[\count($values) - 1]);
         $ville = $values;
 
         $this->ville = implode(" ", $ville);
@@ -39,6 +41,7 @@ final class Ville implements \JsonSerializable
         return $this->codePostal;
     }
 
+    /** @return mixed[] */
     public function jsonSerialize(): array
     {
         return [

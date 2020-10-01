@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Meteo;
@@ -38,6 +40,7 @@ final class Conditions extends Meteo
     /** @var string */
     private $distanceVisibilite;
 
+    /** @param mixed[] $data */
     public function __construct(array $data)
     {
         parent::__construct($data);
@@ -104,6 +107,7 @@ final class Conditions extends Meteo
         return $this->distanceVisibilite;
     }
 
+    /** @return mixed[] */
     public function jsonSerialize(): array
     {
         return array_merge(

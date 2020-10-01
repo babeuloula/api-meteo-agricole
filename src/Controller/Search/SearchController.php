@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Controller\Search;
@@ -26,10 +28,13 @@ final class SearchController
     {
         $term = $request->query->get('term', null);
 
-        if (false === is_string($term)) {
-            return new JsonResponse([
-                'message' => "Paramètre 'term' manquant."
-            ], Response::HTTP_BAD_REQUEST);
+        if (false === \is_string($term)) {
+            return new JsonResponse(
+                [
+                    'message' => "Paramètre 'term' manquant."
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         return new JsonResponse($this->meteoApi->search($term));

@@ -1,7 +1,9 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Controller\Documentation;
@@ -20,6 +22,6 @@ class V2Controller
 
     public function __invoke(): Response
     {
-        return new Response(file_get_contents($this->kernelProjectDir."/docs/v2/index.html"));
+        return new Response(file_get_contents($this->kernelProjectDir . "/docs/v2/index.html"));
     }
 }

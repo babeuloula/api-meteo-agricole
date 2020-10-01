@@ -1,38 +1,40 @@
 <?php
+
 /**
  * @author BaBeuloula <info@babeuloula.fr>
  */
+
 declare(strict_types=1);
 
 namespace App\Meteo;
 
 final class LastTwoDays extends Meteo
 {
-    /** @var array */
+    /** @var string[] */
     private $dates = [];
 
-    /** @var array */
+    /** @var string[] */
     private $temps = [];
     
-    /** @var array */
+    /** @var string[] */
     private $temperatures = [];
 
-    /** @var array */
+    /** @var string[] */
     private $nebulosites = [];
 
-    /** @var array */
+    /** @var string[] */
     private $probabilites = [];
 
-    /** @var array */
+    /** @var string[] */
     private $precipitations = [];
 
-    /** @var array */
+    /** @var string[] */
     private $directions = [];
 
-    /** @var array */
+    /** @var string[] */
     private $vitesses = [];
 
-    /** @var array */
+    /** @var string[] */
     private $humiditesRelatives = [];
 
     public function __construct(array $data)
@@ -102,51 +104,61 @@ final class LastTwoDays extends Meteo
         );
     }
 
+    /** @return string[] */
     public function getDates(): array
     {
         return $this->dates;
     }
 
+    /** @return string[] */
     public function getTemps(): array
     {
         return $this->temps;
     }
 
+    /** @return string[] */
     public function getTemperatures(): array
     {
         return $this->temperatures;
     }
 
+    /** @return string[] */
     public function getNebulosites(): array
     {
         return $this->nebulosites;
     }
 
+    /** @return string[] */
     public function getProbabilites(): array
     {
         return $this->probabilites;
     }
 
+    /** @return string[] */
     public function getPrecipitations(): array
     {
         return $this->precipitations;
     }
 
+    /** @return string[] */
     public function getDirections(): array
     {
         return $this->directions;
     }
 
+    /** @return string[] */
     public function getVitesses(): array
     {
         return $this->vitesses;
     }
 
+    /** @return string[] */
     public function getHumiditesRelatives(): array
     {
         return $this->humiditesRelatives;
     }
 
+    /** @return mixed[] */
     public function jsonSerialize(): array
     {
         return array_merge(
